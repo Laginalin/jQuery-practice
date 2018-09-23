@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>呼吸轮播图</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    #banner-wrapper {
+        width: 900px;
+        height: 540px;
+        margin: 0 auto;
+        position: relative;
+        border: 1px solid #000;
+        background-color: rgba(0,0,0,0.9);
+    }
+
+    #banner-wrapper .imgs ul {
+        list-style: none;
+    }
+
+    #banner-wrapper .imgs ul li {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+    }
+
+    #banner-wrapper .imgs ul li:first-child {
+        display: block;
+    }
+
+    .btns a {
+        position: absolute;
+        width: 30px;
+        height: 60px;
+        background-color: rgba(0,0,0,0.5);
+        color: #fff;
+        text-align: center;
+        line-height: 60px;
+        top: 50%;
+        margin-top: -30px;
+        text-decoration: none;
+        font-family: consolas;
+    }
+
+    .btns a:first-child {
+        left: 10px;
+    }
+
+    .btns a:last-child {
+        right: 10px;
+    }
+    .change-dots {
+        position: absolute;
+        bottom : 20px;
+        right : 20px;
+    }
+    .change-dots a {
+        margin-right: 10px;
+        text-decoration: none;
+        text-align: center;
+        color: rgba(49,160,243,0.5);
+        height: 30px;
+        line-height: 30px;
+        font-size: 70px;
+    }
+    .change-dots a.cur {
+        color: rgba(255,255,255,0.5);
+    }
+    </style>
+</head>
+<body>
+    <div id="banner-wrapper">
+        <div class="imgs" id="banner-imgs">
+            <ul>
+                <li><img src="../images/carousel/aoyun/0.jpg" alt=""></li>
+                <li><img src="../images/carousel/aoyun/1.jpg" alt=""></li>
+                <li><img src="../images/carousel/aoyun/2.jpg" alt=""></li>
+                <li><img src="../images/carousel/aoyun/3.jpg" alt=""></li>
+                <li><img src="../images/carousel/aoyun/4.jpg" alt=""></li>
+                <li><img src="../images/carousel/aoyun/5.jpg" alt=""></li>
+                <li><img src="../images/carousel/aoyun/6.jpg" alt=""></li>
+            </ul>
+        </div>
+        <div class = "btns">
+            <a href="javascript:void(0)" id = "leftBtn">&lt;</a>
+            <a href="javascript:void(0)" id = "rightBtn">&gt;</a>
+        </div>
+        <div class = "change-dots">
+            <a href = "javascript:void(0)" class = "cur">.</a>
+            <a href = "javascript:void(0)">.</a>
+            <a href = "javascript:void(0)">.</a>
+            <a href = "javascript:void(0)">.</a>
+            <a href = "javascript:void(0)">.</a>
+            <a href = "javascript:void(0)">.</a>
+            <a href = "javascript:void(0)">.</a>
+        </div>
+    </div>
+    <script src = "../scripts/jquery-1.12.3.min.js"></script>
+    <script>
+        var $imgs = $("#banner-imgs ul li");
+        var $leftBtn = $("#leftBtn");
+        var $rightBtn = $("#rightBtn");
+        var length = $imgs.length;
+        var $dots = $(".change-dots a");
+        var $wrapper = $("#banner-wrapper");
+
+        var idx = 0;
+
+        var timer = setInterval(change,2600);
+
+        $wrapper.mouseenter(function(){
+            clearInterval(timer);
+        })
+
+        $wrapper.mouseleave(function() {
+            clearInterval(timer);
+            timer = setInterval(change,2600);
+        })
+
+
+
+        $rightBtn.click(change);
+
+        function change() {
+            if($imgs.is(":animated")) {
+                return;
+            }
+            $imgs.eq(idx).fadeOut(600,function() {
+                idx ++;
+
+                if(idx > length -1) {
+                    idx = 0;
+                }
+                $imgs.eq(idx).fadeIn(600);
+                $dots.eq(idx).addClass("cur").siblings().removeClass("cur");
+            });
+        }
+
+        $leftBtn.click(function() {
+            $imgs.eq(idx).fadeOut(600,function() {
+                idx --;
+
+                if(idx < 0) {
+                    idx = length - 1;
+                }
+
+                $imgs.eq(idx).fadeIn(600);
+                $dots.eq(idx).addClass("cur").siblings().removeClass("cur");
+            });
+        })
+
+        $dots.mouseenter(function() {
+
+            $imgs.eq(idx).stop(true).fadeOut(600);
+
+            idx = $(this).index();
+
+            $(this).addClass("cur").siblings().removeClass("cur");
+
+            $imgs.eq(idx).stop(true).fadeIn(600);;
+        })
+
+
+    </script>
+</body>
+</html>

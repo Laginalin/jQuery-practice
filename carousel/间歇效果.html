@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>间歇效果</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        ul {
+            list-style: none;
+        }
+        .carousel {
+            position: relative;
+            width: 278px;
+            height: 78px;
+            margin: 50px auto;
+            border: 1px solid #000;
+            overflow: hidden;
+        }
+        .carousel .unit ul {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 5000px;
+            width: 300px;
+        }
+        .carousel .unit ul li {
+            float: left;
+            width: 78px;
+            height: 78px;
+            margin-right: 22px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="carousel" id="carousel">
+        <div class="unit" id="unit">
+            <ul>
+                <li><img src="../images/carousel/stars/0.jpg" alt=""></li>
+                <li><img src="../images/carousel/stars/1.jpg" alt=""></li>
+                <li><img src="../images/carousel/stars/2.jpg" alt=""></li>
+                <li><img src="../images/carousel/stars/3.jpg" alt=""></li>
+                <li><img src="../images/carousel/stars/4.jpg" alt=""></li>
+                <li><img src="../images/carousel/stars/5.jpg" alt=""></li>
+                <li><img src="../images/carousel/stars/6.jpg" alt=""></li>
+                <li><img src="../images/carousel/stars/7.jpg" alt=""></li>
+                <li><img src="../images/carousel/stars/8.jpg" alt=""></li>
+                <li><img src="../images/carousel/stars/9.jpg" alt=""></li>
+                <li><img src="../images/carousel/stars/10.jpg" alt=""></li>
+                <li><img src="../images/carousel/stars/11.jpg" alt=""></li>
+            </ul>
+        </div>
+    </div>
+    <script src="../scripts/jquery-1.12.3.min.js"></script>
+    <script>
+        var $carousel = $("#carousel");
+        var $unit = $("#unit ul");
+        var length = $unit.children("li").length;
+
+        var idx = 0;
+
+        if(length%3 === 1) {
+            $("<li></li><li></li>").appendTo($unit);
+        } else if(length%3 === 2) {
+            $("<li></li>").appendTo($unit);
+        }
+
+        $unit.children("li:lt(3)").clone().appendTo($unit);
+
+        var timer = setInterval(change,2000);
+
+        function change() {
+            idx ++;
+            $unit.animate({"top": -90*idx}, 600, function() {
+                if(idx > $unit.children().length/3 -2) {
+                    idx = 0;
+                    $unit.css({"top": 0});
+                }
+            })
+        }
+    </script>
+</body>
+</html>
