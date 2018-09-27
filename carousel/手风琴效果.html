@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>手风琴效果</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        ul {
+            list-style: none;
+        }
+        :root {
+            --picWidth: 560px;
+            --picHeight: 300px;
+        }
+        .carousel {
+            position: relative;
+            height: var(--picHeight);
+            margin: 50px auto;
+            border: 1px solid #000;
+            overflow: hidden;
+        }
+        .carousel ul li {
+            position: absolute;
+            width: var(--picWidth);
+            height: var(--picHeight);
+            left: 0;
+        }
+        .carousel ul li div.mask {
+            position: absolute;
+            width: var(--picWidth);
+            height: var(--picHeight);
+            background-color: rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="carousel" id="carousel">
+        <ul>
+                <li>
+                    <div class="mask"></div>
+                    <img src="../images/carousel/animal/0.jpg" alt="">
+                </li>
+                <li>
+                    <div class="mask"></div>
+                    <img src="../images/carousel/animal/1.jpg" alt="">
+                </li>
+                <li>
+                    <div class="mask"></div>
+                    <img src="../images/carousel/animal/2.jpg" alt="">
+                </li>
+                <li>
+                    <div class="mask"></div>
+                    <img src="../images/carousel/animal/3.jpg" alt="">
+                </li>
+                <li>
+                    <div class="mask"></div>
+                    <img src="../images/carousel/animal/4.jpg" alt="">
+                </li>
+            </ul>
+    </div>
+    <script src="../scripts/jquery-1.12.3.min.js"></script>
+    <script>
+    //获取节点
+    var $carousel = $("#carousel");
+    var $imgsList = $("#carousel ul li");
+    //获取图片个数
+    var imgSum = $imgsList.length;
+    //定义一个希望图片能显示的宽度
+    const WIDTH = 180;
+    //定义一个希望图片位移的距离单位,方便后期计算
+    const MOVE = 85;
+    //图片的宽度
+    const IMGWIDTH = 560;
+
+    //页面加载时完善页面样式
+    (function() {
+        $imgsList.each(function(i) {
+            $(this).css({"left": WIDTH*i});
+        })
+        $carousel.css({"width": WIDTH*imgSum});
+    })();
+
+    //添加鼠标移入事件
+    $imgsList.mouseenter(function() {
+        $imgsList.stop(true);
+        var idx = $(this).index();
+
+        $imgsList.each(function(i) {
+            if(i <= idx) {
+                $(this).animate({"left": MOVE*i},600);
+                $(this).children(".mask").stop(true).fadeOut(600);
+                $(this).siblings().children(".mask").stop(true).fadeIn(600);
+            }
+        });
+        $imgsList.each(function(i) {
+            if(i > idx) {
+                $(this).animate({"left": IMGWIDTH + MOVE*(i-1)},600);
+            }
+        });
+    });
+
+    //添加鼠标移出事件
+    $carousel.mouseleave(function() {
+        $imgsList.stop(true);
+        $imgsList.each(function(i) {
+            $(this).animate({"left": WIDTH*i},600);
+            $(this).children(".mask").stop(true).fadeIn(600);
+        })
+    });
+
+    </script>
+</body>
+</html>
